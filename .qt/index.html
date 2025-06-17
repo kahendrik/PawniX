@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PawniX</title>
+  <script src="https://cdn.tailwindcss.com"></script> 
+  <style>
+    @keyframes gradientAnimation {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .gradient-animation {
+      background-size: 200% 200%;
+      animation: gradientAnimation 10s ease-in-out infinite;
+    }
+
+    .section-gradient {
+      background: linear-gradient(135deg, #8f00ff, #00d4ff);
+    }
+
+    .card-gradient {
+      background: linear-gradient(135deg, #8f00ff, #00d4ff);
+    }
+
+    .button-gradient {
+      background: linear-gradient(135deg, #8f00ff, #00d4ff);
+    }
+
+    .arrow-left, .arrow-right {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: #ffffff;
+      stroke-width: 2;
+      z-index: 10;
+    }
+
+    .arrow-left {
+      left: 20px;
+    }
+
+    .arrow-right {
+      right: 20px;
+    }
+
+    .clock-container {
+      position: relative;
+    }
+  </style>
+</head>
+<body class="font-sans bg-black text-white">
+  <div id="app" class="h-full">
+    <!-- Vue App -->
+    <div id="vue-app" class="h-full">
+      <header class="fixed w-full z-50 bg-gradient-to-r from-purple-900 to-black shadow-lg">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+          <div class="flex items-center space-x-2">
+            <div class="w-10 h-10 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">
+              P
+            </div>
+            <span class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-indigo-400">PawniX</span>
+          </div>
+
+          <!-- Desktop CTA Button -->
+          <div class="hidden md:block">
+            <button class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-medium py-2 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center shadow-lg">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+              </svg>
+              Download
+            </button>
+          </div>
+
+        </div>
+      </header>
+
+      <!-- Hero Section -->
+      <section id="home" class="pt-32 pb-20 md:pt-40 md:pb-24 bg-gradient-to-b from-purple-900 to-black">
+        <div class="container mx-auto px-6">
+          <div class="max-w-3xl mx-auto text-center relative">
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-indigo-400">
+              PawniX - source-code Pawn code editor
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-300 mb-12">
+              Professional code editor for the Pawn language
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+              <button class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-medium py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg">
+                Download
+              </button>
+              <a href="https://github.com/kahendrik/pawnix/">
+                <button class="bg-white hover:bg-gray-100 text-purple-600 font-medium py-3 px-8 rounded-lg transition-all duration-300 border border-purple-200 shadow-lg">
+                  source code
+                </button>
+              </a>
+            </div>
+            <div class="mt-24 clock-container">
+              <div class="flex justify-center">
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="bg-black py-12">
+        <div class="container mx-auto px-6">
+          <div class="flex flex-col md:flex-row justify-between items-center">
+            <div class="flex items-center space-x-2 mb-6 md:mb-0">
+              <span class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-indigo-400"></span>
+            </div>
+
+            <div class="text-gray-500 text-sm">
+              © {{ new Date().getFullYear() }} kahendrik. All rights reserved.
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Vue App Script -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const { createApp, ref, onMounted } = Vue;
+
+      const app = createApp({
+        setup() {
+          const isMenuOpen = ref(false);
+          const isScrolled = ref(false);
+          const activeSection = ref('home');
+          const currentTime = ref(new Date());
+
+          onMounted(() => {
+            window.addEventListener('scroll', () => {
+              const sections = ['home', 'features', 'testimonials', 'contact'];
+              const scrollPosition = window.scrollY + 100;
+
+              sections.forEach(section => {
+                const element = document.getElementById(section);
+                if (element) {
+                  const { offsetTop, offsetHeight } = element;
+                  if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+                    activeSection.value = section;
+                  }
+                }
+              });
+
+              isScrolled.value = window.scrollY > 50;
+            });
+
+            setInterval(() => {
+              currentTime.value = new Date();
+            }, 1000);
+          });
+
+          return {
+            isMenuOpen,
+            isScrolled,
+            activeSection,
+            currentTime,
+          };
+        }
+      });
+
+      app.mount('#vue-app'); 
+    });
+  </script>
+
+  <!-- React Gradient Background -->
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    const ReactComponent = () => {
+      return (
+        <div>
+          <div className="absolute top-0 left-0 w-full h-full gradient-animation z-0"></div>
+          <div className="absolute top-0 left-0 w-full h-full gradient-animation z-0"></div>
+          <div className="absolute top-0 left-0 w-full h-full gradient-animation z-0 opacity-30"></div>
+        </div>
+      );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('react-root'));
+    root.render(<ReactComponent />);
+  </script>
+
+  <!-- React Root -->
+  <div id="react-root"></div>
+</body>
+</html>

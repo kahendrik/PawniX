@@ -1,0 +1,19 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/compile.png</file>
+        <file>icons/copy.png</file>
+        <file>icons/cut.png</file>
+        <file>icons/folder.png</file>
+        <file>icons/new.png</file>
+        <file>icons/open.png</file>
+        <file>icons/paste.png</file>
+        <file>icons/pawn_editor.ico</file>
+        <file>icons/redo.png</file>
+        <file>icons/run.png</file>
+        <file>icons/save.png</file>
+        <file>icons/undo.png</file>
+        <file>icons/goto.png</file>
+        <file>icons/replace.png</file>
+        <file>icons/search.png</file>
+    </qresource>
+</RCC>
