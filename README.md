@@ -7,8 +7,8 @@
 ![Platform](https://img.shields.io/badge/Platform-Windows-lightgrey)
 
 <p align="center">
-  <img src="docs/screenshots/1.png" alt="Интерфейс PawniX" width="450">
-  <img src="docs/screenshots/2.png" alt="Интерфейс PawniX" width="450">
+  <img src="docs/screenshots/1.png" alt="Интерфейс PawniX" width="300">
+  <img src="docs/screenshots/2.png" alt="Интерфейс PawniX" width="300">
 </p>
 
 **PawniX** — современный редактор кода для языка Pawn, разработанный специально для создания модификаций San Andreas Multiplayer (SA-MP). Редактор сочетает в себе минималистичный дизайн с мощными функциями для профессиональной разработки.
