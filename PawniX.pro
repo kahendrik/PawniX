@@ -2,6 +2,8 @@ QT += widgets core5compat core gui network
 CONFIG += static
 TARGET = PawniX
 TEMPLATE = app
+CONFIG += c++17
+CONFIG -= app_bundle
 QMAKE_LFLAGS += -static -static-libgcc -static-libstdc++
 
 LIBS += -L"C:/Qt/6.9.1/mingw_64/lib" \
@@ -14,9 +16,11 @@ LIBS += -L"C:/Qt/6.9.1/mingw_64/lib" \
 win32 {
     QMAKE_CXXFLAGS += -finput-charset=UTF-8 -fexec-charset=UTF-8
     DEFINES += _WIN32_WINNT=0x0601
+    RC_ICONS = icons/icon.ico
 }
 
 SOURCES += main.cpp
 RESOURCES += icons.qrc
 RC_FILE = app.rc
-HEADERS += includes.h
+HEADERS = includes.h
+QMAKE_CXXFLAGS += -Wno-unused-parameter

@@ -1,5 +1,5 @@
-// myapp.rc
 #include <windows.h>
+IDI_ICON1 ICON "icons/icon.ico"
 
 VS_VERSION_INFO VERSIONINFO
 FILEVERSION 1,0
@@ -15,11 +15,11 @@ BEGIN
         BLOCK "041904b0"
         BEGIN
             VALUE "CompanyName", "kahendrik\0"
-            VALUE "FileDescription", "Powerful Pawn editor\0"
-            VALUE "FileVersion", "1.0\0"
+            VALUE "FileDescription", "PawniX - powerful and modern Pawn editor\0"
+            VALUE "FileVersion", "2.0\0"
             VALUE "LegalCopyright", "2025 kahendrik\0"
             VALUE "ProductName", "PawniX\0"
-            VALUE "ProductVersion", "1.0\0"
+            VALUE "ProductVersion", "2.0\0"
         END
     END
     BLOCK "VarFileInfo"
