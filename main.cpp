@@ -1,4 +1,64 @@
-#include <includes.h>
+#include <QApplication>
+#include <QMainWindow>
+#include <QTextEdit>
+#include <QPlainTextEdit>
+#include <QSyntaxHighlighter>
+#include <QTextCharFormat>
+#include <QRegularExpression>
+#include <QTimer>
+#include <QPushButton>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QTextStream>
+#include <QStatusBar>
+#include <QMenuBar>
+#include <QMenu>
+#include <QAction>
+#include <QKeySequence>
+#include <QFile>
+#include <QTextCodec>
+#include <QCompleter>
+#include <QStackedWidget>
+#include <QTabWidget>
+#include <QDockWidget>
+#include <QTreeView>
+#include <QFileSystemModel>
+#include <QLabel>
+#include <QListWidget>
+#include <QListWidgetItem>
+#include <QGraphicsDropShadowEffect>
+#include <QPropertyAnimation>
+#include <QPainter>
+#include <QTextBlock>
+#include <QTextCursor>
+#include <QTextDocumentFragment>
+#include <QTextDocument>
+#include <QScrollBar>
+#include <QInputDialog>
+#include <QColorDialog>
+#include <QCheckBox>
+#include <QLineEdit>
+#include <QDialog>
+#include <QGridLayout>
+#include <QDialogButtonBox>
+#include <QProcess>
+#include <QSettings>
+#include <QElapsedTimer>
+#include <QTextCodec>
+#include <QByteArray>
+#include <QDebug>
+#include <QFontMetrics>
+#include <QFontDialog>
+#include <QStackedWidget>
+#include <QTimer>
+#include <QPropertyAnimation>
+#include <QGraphicsEffect>
+#include <QTextCodec>
+#include <QByteArray>
+#include <QTextDecoder>
+#include <QTextEncoder>
 
 class AnimatedTitle : public QLabel {
     Q_OBJECT
@@ -1445,30 +1505,29 @@ public slots:
         QByteArray data = file.readAll();
         file.close();
 
-        qint64 fileSize = data.size();
-        bool isLargeFile = fileSize > 1024 * 1024;
-
         QString content;
         QString detectedEncoding = "UTF-8";
 
-        if (isLargeFile) {
-            content = QString::fromUtf8(data);
+        QTextCodec* codec = QTextCodec::codecForName("UTF-8");
+        QTextCodec* cp1251Codec = QTextCodec::codecForName("Windows-1251");
+        QTextCodec* localeCodec = QTextCodec::codecForLocale();
+
+        bool isUtf8 = true;
+        QTextCodec::ConverterState state;
+        codec->toUnicode(data.constData(), data.size(), &state);
+        if (state.invalidChars > 0) {
+            isUtf8 = false;
+        }
+
+        if (isUtf8) {
+            content = codec->toUnicode(data);
             detectedEncoding = "UTF-8";
+        } else if (cp1251Codec) {
+            content = cp1251Codec->toUnicode(data);
+            detectedEncoding = "Windows-1251";
         } else {
-            QTextCodec *codec = QTextCodec::codecForUtfText(data, nullptr);
-            if (codec && codec->name() != "UTF-8") {
-                content = codec->toUnicode(data);
-                detectedEncoding = codec->name();
-            } else {
-                QTextCodec *sysCodec = QTextCodec::codecForLocale();
-                content = sysCodec->toUnicode(data);
-                if (content.contains(QRegularExpression("[\u0400-\u04FF]"))) {
-                    detectedEncoding = sysCodec->name();
-                } else {
-                    content = QString::fromUtf8(data);
-                    detectedEncoding = "UTF-8";
-                }
-            }
+            content = localeCodec->toUnicode(data);
+            detectedEncoding = "System Locale";
         }
 
         currentFileEncoding = detectedEncoding;
@@ -1787,7 +1846,6 @@ private slots:
     void newFile() {
         CodeEditor* editor = new CodeEditor();
         int index = editorTab->addTab(editor, "Новый файл");
-        editorTab->setTabIcon(index, QIcon(":/icons/file.png"));
         editorTab->setCurrentIndex(index);
         currentFilePath.clear();
         currentFileEncoding = "UTF-8";
@@ -1831,6 +1889,7 @@ private slots:
                                   fileInfo.suffix().toLower() == "inc" ||
                                   fileInfo.suffix().toLower() == "cfg" ||
                                   fileInfo.suffix().toLower() == "txt" ||
+                                  fileInfo.suffix().toLower() == "ini" ||
                                   fileInfo.suffix().toLower() == "pawn")) {
             loadFile(filePath);
         }
@@ -2060,7 +2119,7 @@ private slots:
 
     void selectCompiler() {
         QString path = QFileDialog::getOpenFileName(this, "Выберите компилятор pawncc",
-                                                    "", "pawncc (pawncc.exe)");
+                                                    "", "Pawn Compiler (pawncc.exe)");
         if (!path.isEmpty()) {
             pawnccPath = path;
             settings->setValue("compilerPath", pawnccPath);
@@ -2137,14 +2196,14 @@ private slots:
     }
 
     void openDocumentation() {
-        QDesktopServices::openUrl(QUrl("https://www.compuphase.com/pawn/pawn.htm"));
+        //QDesktopServices::openUrl(QUrl("https://www.compuphase.com/pawn/pawn.htm"));
     }
 
     void about() {
         QString aboutText =
             "<center><h2>PawniX</h2></center>"
-            "<p><b>Версия 2.0</b></p>"
-            "<p>Современная интегрированная среда разработки для языка Pawn</p>"
+            "<p><b><center>Версия 2.0</center></b></p>"
+            "<p>Современная среда разработки для языка Pawn</p>"
             "<hr>"
             "<p><b>Основные возможности:</b></p>"
             "<ul>"
@@ -2155,13 +2214,12 @@ private slots:
             "<li>Система закладок</li>"
             "<li>Поиск и замена с поддержкой регулярных выражений</li>"
             "<li>Интегрированный компилятор Pawn</li>"
-            "<li>Консоль вывода компиляции</li>"
+            "<li>Консоль вывода</li>"
             "<li>Файловый менеджер</li>"
             "<li>Автосохранение и резервное копирование</li>"
             "</ul>"
             "<hr>"
             "<p><b>Разработчик:</b> kahendrik</p>"
-            "<p><b>Сайт:</b> <a href='https://pawnix.tech'>https://pawnix.tech</a></p>"
             "<p><b>GitHub:</b> <a href='https://github.com/kahendrik/pawnix'>https://github.com/kahendrik/pawnix</a></p>"
             "<p><b>Лицензия:</b> MIT License</p>";
 
@@ -2312,14 +2370,16 @@ private slots:
 
         QByteArray data;
         if (encoding == "UTF-8") {
-            QStringEncoder encoder(QStringConverter::Utf8);
-            data = encoder.encode(content);
+            data = content.toUtf8();
         } else if (encoding == "Windows-1251") {
-            QStringEncoder encoder(QStringConverter::System);
-            data = encoder.encode(content);
+            QTextCodec* codec = QTextCodec::codecForName("Windows-1251");
+            if (codec) {
+                data = codec->fromUnicode(content);
+            } else {
+                data = content.toLocal8Bit();
+            }
         } else {
-            QStringEncoder encoder(QStringConverter::Utf8);
-            data = encoder.encode(content);
+            data = content.toUtf8();
         }
 
         file.write(data);
