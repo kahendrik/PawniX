@@ -1,7 +1,7 @@
 # PawniX
 
 ![PawniX Logo](https://img.shields.io/badge/PawniX-Editor-blue)
-![Qt](https://img.shields.io/badge/Qt-5.15%2B-green)
+![Qt](https://img.shields.io/badge/Qt-6.9%2B-green)
 ![C++](https://img.shields.io/badge/C%2B%2B-17-blue)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 ![Platform](https://img.shields.io/badge/Platform-Windows-lightgrey)
@@ -55,7 +55,7 @@
 ### Компиляция на Windows
 
 #### Вариант 1: Использование Qt Creator
-1. Установите [Qt Creator](https://www.qt.io/download) с компонентами Qt 5.15+
+1. Установите [Qt Creator](https://www.qt.io/download) с компонентами Qt 6.9+
 2. Откройте файл `CMakeLists.txt` или `pawnix.pro` в Qt Creator
 3. Выберите комплект (kit) с MinGW или MSVC
 4. Нажмите **Собрать проект**
