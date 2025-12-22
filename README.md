@@ -3,7 +3,7 @@
 ![PawniX Logo](https://img.shields.io/badge/PawniX-Editor-blue)
 ![Qt](https://img.shields.io/badge/Qt-6.9%2B-green)
 ![C++](https://img.shields.io/badge/C%2B%2B-17-blue)
-![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)]
 ![Platform](https://img.shields.io/badge/Platform-Windows-lightgrey)
 
 <p align="center">
